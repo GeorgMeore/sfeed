@@ -46,22 +46,22 @@ SFEED_CURSES_LDFLAGS = ${LDFLAGS} -lcurses
 
 BIN = \
 	sfeed\
-	sfeed_atom\
 	${SFEED_CURSES}\
-	sfeed_frames\
-	sfeed_gopher\
-	sfeed_html\
-	sfeed_mbox\
 	sfeed_opml_import\
 	sfeed_plain\
 	sfeed_twtxt\
-	sfeed_web\
-	sfeed_xmlenc
+	sfeed_xmlenc\
+#	sfeed_web\
+#	sfeed_html\
+#	sfeed_mbox\
+#	sfeed_atom\
+#	sfeed_frames\
+#	sfeed_gopher
 SCRIPTS = \
-	sfeed_content\
-	sfeed_markread\
 	sfeed_opml_export\
-	sfeed_update
+	sfeed_update\
+#	sfeed_content\
+#	sfeed_markread
 
 SRC = ${BIN:=.c}
 HDR = \
