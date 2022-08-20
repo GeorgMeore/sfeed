@@ -141,12 +141,11 @@ _feed() {
 	fi
 	rm -f "${tmpfeedfile}.merge"
 
-	# copy
-	if ! cp "${tmpfeedfile}.order" "${sfeedfile}"; then
-		log "${name}" "FAIL (COPY)"
+	# overwrite
+	if ! mv "${tmpfeedfile}.order" "${sfeedfile}"; then
+		log "${name}" "FAIL (MOVE)"
 		return
 	fi
-	rm -f "${tmpfeedfile}.order"
 
 	# OK
 	log "${name}" "OK"
@@ -195,7 +194,7 @@ main() {
 	# load config file.
 	loadconfig "$1"
 	# fetch feeds and store in temporary directory.
-	sfeedtmpdir="$(mktemp -d '/tmp/sfeed_XXXXXX')"
+	sfeedtmpdir="$(mktemp -d "$HOME/.sfeed/tmpXXXXX")"
 	# make sure path exists.
 	mkdir -p "${sfeedpath}"
 	# fetch feeds specified in config file.
