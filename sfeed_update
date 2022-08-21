@@ -4,6 +4,7 @@
 
 # defaults
 sfeedpath="$HOME/.sfeed/feeds"
+sfeedtmpdir="$HOME/.sfeed/tmp"
 
 # used for processing feeds concurrently: wait until ${maxjobs} amount of
 # feeds are finished at a time.
@@ -182,6 +183,14 @@ feeds() {
 	echo "See sfeedrc.example for an example." >&2
 }
 
+lockpath() {
+	exec 3<"${sfeedpath}"
+	if ! flock 3; then
+		echo "Failed to acquire write lock." >&2
+		exit 1
+	fi
+}
+
 main() {
 	# job counter.
 	curjobs=0
@@ -193,10 +202,10 @@ main() {
 	trap -- "sighandler 15" "TERM"
 	# load config file.
 	loadconfig "$1"
-	# fetch feeds and store in temporary directory.
-	sfeedtmpdir="$(mktemp -d "$HOME/.sfeed/tmpXXXXX")"
-	# make sure path exists.
-	mkdir -p "${sfeedpath}"
+	# acquire write lock
+	lockpath
+	# make sure paths exist.
+	mkdir -p "${sfeedpath}" "${sfeedtmpdir}"
 	# fetch feeds specified in config file.
 	feeds
 	# wait till all feeds are fetched (concurrently).
