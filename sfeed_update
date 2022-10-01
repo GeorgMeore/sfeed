@@ -202,10 +202,10 @@ main() {
 	trap -- "sighandler 15" "TERM"
 	# load config file.
 	loadconfig "$1"
+	mkdir -p "${sfeedpath}"
 	# acquire write lock
 	lockpath
-	# make sure paths exist.
-	mkdir -p "${sfeedpath}" "${sfeedtmpdir}"
+	mkdir -p "${sfeedtmpdir}"
 	# fetch feeds specified in config file.
 	feeds
 	# wait till all feeds are fetched (concurrently).
